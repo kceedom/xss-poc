@@ -2,7 +2,7 @@
 <script>
 // Auto-execute on page load
 fetch('https://textjam.com/api/auth/logout', {
-    method: 'POST',
+    method: 'GET',
     credentials: 'include',  // Send cookies
     mode: 'no-cors'         // Bypass CORS
 }).catch(() => {}); // Ignore errors
@@ -12,5 +12,6 @@ setTimeout(() => {
     window.location.href = 'https://textjam.com';
 }, 300);
 </script>
+
 
 
