@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <script>
 // Auto-execute on page load
-fetch('https://staging.textjam.com/doc/H16U9PH6/access/public/editor', {
+fetch('https://staging.textjam.com/api/doc/H16U9PH6/access/public/editor', {
     method: 'POST',
     credentials: 'include',
     mode: 'no-cors',
@@ -13,6 +13,7 @@ fetch('https://staging.textjam.com/doc/H16U9PH6/access/public/editor', {
 
 // Redirect to the document API endpoint
 setTimeout(() => {
-    window.location.href = 'https://staging.textjam.com/doc/H16U9PH6';
+    window.location.href = 'https://staging.textjam.com/api/doc/H16U9PH6';
 }, 500);
 </script>
+
