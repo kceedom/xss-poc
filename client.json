@@ -1,0 +1,9 @@
+{
+  "client_id": "test_agent",
+  "client_name": "Test MCP Agent",
+  "redirect_uris": ["https://oob.kuphaldannie0.workers.dev/callback"],
+  "logo_uri": "https://apture.store/dog.jpg",
+  "jwks_uri": "http://apture.store/jwks.json",
+  "grant_types": ["authorization_code"],
+  "response_types": ["code"]
+}
