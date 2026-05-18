@@ -1,5 +1,12 @@
 {
-  "_id":"../../../api/sink/promote/lax_in_extra_param_promote/66fc8c17d29c4a98a44a4a87#",
-  "title":"I'm a File not a Note",
-  "description":"We will use this gadget to return a malicious id"
+  "keys": [
+    {
+      "kty": "RSA",
+      "use": "sig",
+      "kid": "test-key-001",
+      "alg": "RS256",
+      "n": "sIwr1R5LWBV7EATPh9FJPV7-VHhFMpOuFsRBKPAA8FGA8EaWzpXuWOc6HSFOzFdUfzAlRqVfBXBgfaQ7pCIJK6jBs3ses86n0UJqhX6XQXO_bBSIZYKOfHTGkI0c0aWFbTGRJtjxSxIaWnUBxjKPkjIzFMDy5KulEA65LUmXkVZ8YGFQaKDHFAMOvNpWUwcbzI5HnmzXWBiSjVbNQO2EqmzB3wXhEU6cNk6XUuPMxMv6t5hNF-vkXUAqA3RBaSW3FGsH2V7JKe83BHnUx2RVLQh6dWcFKwkSuS1JGNBsMhJJy0x1aT8R5P5jHX0EE6QcBEP5G7_wuT2yMjQ",
+      "e": "AQAB"
+    }
+  ]
 }
