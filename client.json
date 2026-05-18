@@ -1,9 +1,16 @@
 {
-  "client_id": "test_agent",
-  "client_name": "Test MCP Agent",
-  "redirect_uris": ["https://oob.kuphaldannie0.workers.dev/callback"],
+  "client_id": "oob_agent_001",
+  "client_name": "OOB MCP Agent",
+  "client_uri": "https://oob.kuphaldannie0.workers.dev/client",
+  "redirect_uris": [
+    "https://oob.kuphaldannie0.workers.dev/callback"
+  ],
   "logo_uri": "https://apture.store/dog.jpg",
-  "jwks_uri": "http://apture.store/jwks.json",
+  "jwks_uri": "https://apture.store/jwks.json",
   "grant_types": ["authorization_code"],
-  "response_types": ["code"]
+  "response_types": ["code"],
+  "scope": "boards:read boards:write",
+  "token_endpoint_auth_method": "private_key_jwt",
+  "contacts": ["kuphaldannie0@gmail.com"],
+  "client_secret_expires_at": 0
 }
