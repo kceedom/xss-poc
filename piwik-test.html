@@ -1,0 +1,39 @@
+<!-- Create: piwik-test.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Piwik PRO Test</title>
+  
+  <!-- Piwik PRO tracking code -->
+  <script>
+    (function(window, document, dataLayerName, id) {
+      window[dataLayerName] = window[dataLayerName] || [];
+      window[dataLayerName].push({
+        start: (new Date).getTime(), 
+        event:'stg.start'
+      });
+      var scripts = document.getElementsByTagName('script')[0];
+      var tags = document.createElement('script');
+      tags.async = !0;
+      tags.src = 'https://apturetest.piwiksandbox.com/containers/'+id+'.js';
+      scripts.parentNode.insertBefore(tags, scripts);
+    })(window, document, 'dataLayer', '1d8d72ad-21ae-4c5f-971f-704b5b3fe3d0');
+  </script>
+</head>
+<body>
+  <h1>Piwik PRO Tracking Test</h1>
+  <button onclick="trackCustomEvent()">Track Event</button>
+
+  <script>
+    function trackCustomEvent() {
+      window._paq = window._paq || [];
+      window._paq.push([
+        'trackEvent',
+        'TestCategory',
+        'TestAction', 
+        'TestLabel'
+      ]);
+    }
+  </script>
+</body>
+</html>
